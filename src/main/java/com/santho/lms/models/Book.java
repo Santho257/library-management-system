@@ -24,7 +24,7 @@ public class Book {
     @Column(name = "publication_date", nullable = false)
     private LocalDate publicationDate;
 
-    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "book", cascade = CascadeType.REMOVE)
     private List<BorrowerDetails> borrowers;
     @ManyToOne
     @JoinColumn(name = "author_id")
