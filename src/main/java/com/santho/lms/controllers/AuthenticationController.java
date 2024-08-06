@@ -7,14 +7,12 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
+@CrossOrigin
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
@@ -26,5 +24,10 @@ public class AuthenticationController {
     @PostMapping("/sign-up")
     public ResponseEntity<String> signUp(@Valid @RequestBody SignUpDto signUpDto){
         return ResponseEntity.ok(authenticationService.signUp(signUpDto));
+    }
+
+    @PostMapping("/admin-signUp")
+    public ResponseEntity<String> admin(@RequestBody SignUpDto signUpDto){
+        return ResponseEntity.ok(authenticationService.adminSignUp(signUpDto));
     }
 }

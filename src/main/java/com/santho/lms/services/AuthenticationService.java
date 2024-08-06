@@ -9,4 +9,6 @@ public interface AuthenticationService {
     String login(SignInDto signInDto);
 
     String signUp(SignUpDto signUpDto);
+
+    String adminSignUp(SignUpDto signUpDto);
 }

@@ -8,6 +8,7 @@ import static com.santho.lms.helper.ArrayToStringHelper.arrToString;
 import com.santho.lms.exception.UserExistsException;
 import com.santho.lms.mappers.BorrowMapper;
 import com.santho.lms.models.Borrower;
+import com.santho.lms.models.Role;
 import com.santho.lms.services.security.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -54,6 +55,19 @@ public class AuthenticationServiceImpl implements AuthenticationService{
         if(borrowerDao.existsById(signUpDto.getUsername()))
             throw new UserExistsException("User already Exists:: User Email : "+signUpDto.getUsername());
         Borrower borrower = borrowerDao.save(BorrowMapper.toBorrower(signUpDto));
+        return jwtService.generateToken( User
+                .withUsername(borrower.getUsername())
+                .password(borrower.getPassword())
+                .roles(borrower.getRole().toString())
+                .build());
+    }
+
+    @Override
+    public String adminSignUp(SignUpDto signUpDto) {
+        if(borrowerDao.existsById(signUpDto.getUsername()))
+            throw new UserExistsException("User already Exists:: User Email : "+signUpDto.getUsername());
+        Borrower borrower = borrowerDao.save(BorrowMapper.toBorrower(signUpDto));
+        borrower.setRole(Role.ADMIN);
         return jwtService.generateToken( User
                 .withUsername(borrower.getUsername())
                 .password(borrower.getPassword())
