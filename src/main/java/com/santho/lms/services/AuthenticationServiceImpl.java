@@ -1,6 +1,7 @@
 package com.santho.lms.services;
 
 import com.santho.lms.daos.BorrowerDao;
+import com.santho.lms.dto.auth.AuthResponseDto;
 import com.santho.lms.dto.auth.SignInDto;
 import com.santho.lms.dto.auth.SignUpDto;
 import static com.santho.lms.helper.ArrayToStringHelper.arrToString;
@@ -29,7 +30,7 @@ public class AuthenticationServiceImpl implements AuthenticationService{
     private final AuthenticationManager authenticationManager;
     private final BorrowerDao borrowerDao;
     @Override
-    public String login(SignInDto signInDto){
+    public AuthResponseDto login(SignInDto signInDto){
         Borrower borrower = borrowerDao.findById(signInDto.getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException("User doesn't exists:: User Email : " + signInDto.getUsername()));
         if(!passwordEncoder.matches(arrToString(signInDto.getPassword()), borrower.getPassword())){
@@ -43,35 +44,50 @@ public class AuthenticationServiceImpl implements AuthenticationService{
         catch (AuthenticationException ex){
             throw new BadCredentialsException("Username Password Doesn't match");
         }
-        return jwtService.generateToken(User
+        String token = jwtService.generateToken(User
                 .withUsername(borrower.getUsername())
                 .password(borrower.getPassword())
                 .roles(borrower.getRole().toString())
                 .build());
+
+        return AuthResponseDto.builder()
+                .token(token)
+                .role(borrower.getRole())
+                .build();
     }
 
     @Override
-    public String signUp(SignUpDto signUpDto) {
+    public AuthResponseDto signUp(SignUpDto signUpDto) {
         if(borrowerDao.existsById(signUpDto.getUsername()))
             throw new UserExistsException("User already Exists:: User Email : "+signUpDto.getUsername());
         Borrower borrower = borrowerDao.save(BorrowMapper.toBorrower(signUpDto));
-        return jwtService.generateToken( User
+        String token = jwtService.generateToken( User
                 .withUsername(borrower.getUsername())
                 .password(borrower.getPassword())
                 .roles(borrower.getRole().toString())
                 .build());
+        return AuthResponseDto.builder()
+                .token(token)
+                .role(borrower.getRole())
+                .build();
     }
 
     @Override
-    public String adminSignUp(SignUpDto signUpDto) {
+    public AuthResponseDto adminSignUp(SignUpDto signUpDto) {
         if(borrowerDao.existsById(signUpDto.getUsername()))
             throw new UserExistsException("User already Exists:: User Email : "+signUpDto.getUsername());
-        Borrower borrower = borrowerDao.save(BorrowMapper.toBorrower(signUpDto));
+        Borrower borrower = BorrowMapper.toBorrower(signUpDto);
         borrower.setRole(Role.ADMIN);
-        return jwtService.generateToken( User
+        borrowerDao.save(borrower);
+        System.out.println(borrower.getRole());
+        String token = jwtService.generateToken( User
                 .withUsername(borrower.getUsername())
                 .password(borrower.getPassword())
                 .roles(borrower.getRole().toString())
                 .build());
+        return AuthResponseDto.builder()
+                .token(token)
+                .role(borrower.getRole())
+                .build();
     }
 }

@@ -1,6 +1,8 @@
 package com.santho.lms.daos;
 
 import com.santho.lms.models.Borrower;
+import com.santho.lms.models.Role;
+import com.santho.lms.models.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -11,4 +13,5 @@ public interface BorrowerDao extends JpaRepository<Borrower, String> {
     List<Borrower> sort();
     @Query("SELECT br FROM Borrower br WHERE LOWER(br.name) LIKE %:key%")
     List<Borrower> search(String key);
+    List<Borrower> findByRoleAndStatus(Role role, Status status);
 }

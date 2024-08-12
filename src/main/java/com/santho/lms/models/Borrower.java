@@ -21,6 +21,8 @@ public class Borrower {
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
+    @Enumerated
+    private Status status;
     @OneToMany(mappedBy = "borrower", cascade = CascadeType.REMOVE)
     private List<BorrowerDetails> borrowed;
 }

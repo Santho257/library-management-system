@@ -18,6 +18,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -25,14 +29,19 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
     private final JwtAuthenticationFilter jwtFilter;
     private final CustomUserDetailsService userDetailsService;
+    private final CorsConfigurationSource corsConfigurationSource;
 
     private final String[] WHITE_LIST = new String[]{"/swagger-ui/**", "/swagger-ui.html",
             "/v3/api-docs/**", "/books/list", "/authors/list", "/books/sort", "/authors/sort",
             "/books/search", "/authors/search", "/auth/**", "/login", "/error"};
 
-    private final String[] BORROWER_LIST = new String[]{"/library/borrow", "/library/return/**"};
+    private final String[] BORROWER_LIST = new String[]{"/library/borrow", "/library/return/**", "/library/borrower", "library/borrower/unreturned"};
 
-    private final String[] ADMIN_LIST = new String[]{"/borrower/**", "/books/**", "/authors/**", "/library/unreturned", "/library/borrower/**"};
+    private final String[] ADMIN_LIST = new String[]{"/borrowers/**","/borrowers", "/books/**", "/authors/**","/library", "/library/unreturned", "/library/borrower/**",  "/bot/**"};
+
+    private final String[] BOTH_GET_LIST = new String[]{
+            "/messages/**", "/bot", "/bot/**"
+    };
 
     @Bean
     AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
@@ -54,7 +63,7 @@ public class SecurityConfig {
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity security) throws Exception {
-        security.cors(AbstractHttpConfigurer::disable);
+        security.cors(cors -> cors.configurationSource(corsConfigurationSource));
         security.csrf(AbstractHttpConfigurer::disable);
 
         security.authorizeHttpRequests(request ->
@@ -63,6 +72,8 @@ public class SecurityConfig {
                         .permitAll()
                         .requestMatchers(WHITE_LIST)
                         .permitAll()
+                        .requestMatchers(HttpMethod.GET, BOTH_GET_LIST)
+                        .hasAnyRole("BORROWER","ADMIN")
                         .requestMatchers(BORROWER_LIST)
                         .hasRole("BORROWER")
                         .requestMatchers(ADMIN_LIST)
@@ -74,5 +85,17 @@ public class SecurityConfig {
         security.authenticationProvider(authenticationProvider());
         security.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return security.build();
+    }
+
+    @Bean
+    public CorsFilter corsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true); // Allow credentials (cookies, etc.)
+        config.addAllowedOriginPattern("*"); // Allow all origins
+        config.addAllowedHeader("*"); // Allow all headers
+        config.addAllowedMethod("*"); // Allow all HTTP methods
+        source.registerCorsConfiguration("/**", config);
+        return new CorsFilter(source);
     }
 }

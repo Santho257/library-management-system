@@ -5,6 +5,8 @@ import com.santho.lms.dto.borrowdetails.BorrowDetailsRequestDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public interface BorrowDetailsService {
     ResponseEntity<Response<?>> getAll();
@@ -18,4 +20,5 @@ public interface BorrowDetailsService {
     ResponseEntity<Response<?>> unBrReturned(String lowerCase);
 
     ResponseEntity<Response<?>> unReturned();
+
 }

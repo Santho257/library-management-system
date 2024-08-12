@@ -25,6 +25,11 @@ public class BorrowerController {
         return borrowerService.getAll();
     }
 
+    @GetMapping("/admins/online")
+    public ResponseEntity<List<BorrowerResponseDto>> getOnlineAdmins(){
+        return ResponseEntity.ok(borrowerService.getOnlineAdmins());
+    }
+
     @GetMapping("/sort")
     public ResponseEntity<Response<?>> sort(){
         return borrowerService.sort();

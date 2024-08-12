@@ -22,4 +22,6 @@ public interface BorrowerService {
     ResponseEntity<Response<String>> delete(String id);
 
     Borrower get(String username);
+
+    List<BorrowerResponseDto> getOnlineAdmins();
 }

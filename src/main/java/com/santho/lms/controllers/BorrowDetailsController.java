@@ -34,6 +34,14 @@ public class BorrowDetailsController {
     public ResponseEntity<Response<?>> unBrReturned(@PathVariable String borrower){
         return borrowDetailsService.unBrReturned(borrower.toLowerCase());
     }
+    @GetMapping("/borrower")
+    public ResponseEntity<Response<?>> getBorrowed(Principal principal){
+        return borrowDetailsService.getByBorrower(principal.getName().toLowerCase());
+    }
+    @GetMapping("/borrower/unreturned")
+    public ResponseEntity<Response<?>> getBrUnreturned(Principal principal){
+        return borrowDetailsService.unBrReturned(principal.getName().toLowerCase());
+    }
     @PostMapping("/borrow")
     public ResponseEntity<Response<String>> borrow(@Valid @RequestBody BorrowDetailsRequestDto bdrDto, Principal principal){
         bdrDto.setBorrowerId(principal.getName());

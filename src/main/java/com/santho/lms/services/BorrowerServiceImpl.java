@@ -6,6 +6,8 @@ import com.santho.lms.dto.borrower.BorrowerRequestDto;
 import com.santho.lms.dto.borrower.BorrowerResponseDto;
 import com.santho.lms.mappers.BorrowMapper;
 import com.santho.lms.models.Borrower;
+import com.santho.lms.models.Role;
+import com.santho.lms.models.Status;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
@@ -71,6 +73,13 @@ public class BorrowerServiceImpl implements BorrowerService{
     public Borrower get(String username) {
         return borrowerDao.findById(username)
                 .orElseThrow(() -> new NullPointerException("Borrower Not available with username : "+username));
+    }
+
+    @Override
+    public List<BorrowerResponseDto> getOnlineAdmins() {
+        return borrowerDao.findByRoleAndStatus(Role.ADMIN, Status.BOTCHAT).stream()
+                .map( borrower -> modelMapper.map(borrower,BorrowerResponseDto.class))
+                .toList();
     }
 
 }
