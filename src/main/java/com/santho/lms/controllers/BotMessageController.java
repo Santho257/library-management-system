@@ -12,6 +12,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/bot")
+@CrossOrigin
 public class BotMessageController {
     private final BotMessageService botMessageService;
     @PostMapping

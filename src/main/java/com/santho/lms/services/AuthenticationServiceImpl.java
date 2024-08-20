@@ -10,6 +10,7 @@ import com.santho.lms.exception.UserExistsException;
 import com.santho.lms.mappers.BorrowMapper;
 import com.santho.lms.models.Borrower;
 import com.santho.lms.models.Role;
+import com.santho.lms.models.Status;
 import com.santho.lms.services.security.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -49,7 +50,8 @@ public class AuthenticationServiceImpl implements AuthenticationService{
                 .password(borrower.getPassword())
                 .roles(borrower.getRole().toString())
                 .build());
-
+        borrower.setStatus(Status.BOTCHAT);
+        borrowerDao.save(borrower);
         return AuthResponseDto.builder()
                 .token(token)
                 .role(borrower.getRole())

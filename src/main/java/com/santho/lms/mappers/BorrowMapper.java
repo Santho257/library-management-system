@@ -3,6 +3,7 @@ package com.santho.lms.mappers;
 import com.santho.lms.dto.auth.SignUpDto;
 import com.santho.lms.dto.borrower.BorrowerRequestDto;
 import com.santho.lms.models.Borrower;
+import com.santho.lms.models.Status;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -34,6 +35,7 @@ public class BorrowMapper {
                 .username(signUpDto.getUsername())
                 .name(signUpDto.getName())
                 .role(BORROWER)
+                .status(Status.BOTCHAT)
                 .password(passwordEncoder.encode(arrToString(signUpDto.getPassword())))
                 .build();
     }

@@ -37,6 +37,7 @@ public class BorrowDetailsMapper {
     public static BorrowDetailsResponseDto revMap(BorrowerDetails bd){
         return BorrowDetailsResponseDto.builder()
                 .id(bd.getId())
+                .bookId(bd.getBook().getId())
                 .title(bd.getBook().getTitle())
                 .borrowerId(bd.getBorrower().getUsername())
                 .borrowedOn(bd.getBorrowedOn().toString())

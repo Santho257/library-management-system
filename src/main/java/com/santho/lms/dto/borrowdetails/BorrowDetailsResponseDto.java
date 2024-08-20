@@ -13,6 +13,7 @@ import java.time.LocalDate;
 @Builder
 public class BorrowDetailsResponseDto {
     private int id;
+    private Integer bookId;
     private String title;
     private String borrowerId;
     private String borrowedOn;

@@ -1,5 +1,6 @@
 package com.santho.lms.mappers;
 
+import com.santho.lms.dto.message.MessageType;
 import com.santho.lms.dto.message.MessagesRequestDto;
 import com.santho.lms.dto.message.MessagesResponseDto;
 import com.santho.lms.models.Messages;
@@ -33,7 +34,8 @@ public class MessageMapper {
                 .sender(messages.getSender())
                 .receiver(messages.getReceiver())
                 .content(messages.getContent())
-                .sentAt(messages.getSentTime())
+                .messageType(MessageType.CHAT)
+                .sentAt(messages.getSentTime().toString())
                 .build();
     }
 }

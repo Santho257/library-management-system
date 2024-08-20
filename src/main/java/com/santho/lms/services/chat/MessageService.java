@@ -22,10 +22,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class MessageService {
-    private final ModelMapper modelMapper;
     private final ChatRoomService chatRoomService;
-    private final BorrowerDao borrowerDao;
-    private final BorrowerService borrowerService;
     private final MessageDao repository;
 
     public MessagesResponseDto send(String sender, MessagesRequestDto request){

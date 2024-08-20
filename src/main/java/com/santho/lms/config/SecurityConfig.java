@@ -13,6 +13,8 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.socket.AbstractSecurityWebSocketMessageBrokerConfigurer;
+import org.springframework.security.config.annotation.web.socket.EnableWebSocketSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -31,16 +33,18 @@ public class SecurityConfig {
     private final CustomUserDetailsService userDetailsService;
     private final CorsConfigurationSource corsConfigurationSource;
 
-    private final String[] WHITE_LIST = new String[]{"/swagger-ui/**", "/swagger-ui.html",
-            "/v3/api-docs/**", "/books/list", "/authors/list", "/books/sort", "/authors/sort",
-            "/books/search", "/authors/search", "/auth/**", "/login", "/error"};
+    private final String[] WHITE_LIST = new String[]{"/swagger-ui/**", "/ws","/ws/**","/swagger-ui.html", "/v3/api-docs/**", "/books/list", "/authors/list", "/books/sort", "/authors/sort", "/books/search", "/authors/search", "/auth/**", "/login", "/error"};
 
     private final String[] BORROWER_LIST = new String[]{"/library/borrow", "/library/return/**", "/library/borrower", "library/borrower/unreturned"};
 
     private final String[] ADMIN_LIST = new String[]{"/borrowers/**","/borrowers", "/books/**", "/authors/**","/library", "/library/unreturned", "/library/borrower/**",  "/bot/**"};
 
     private final String[] BOTH_GET_LIST = new String[]{
-            "/messages/**", "/bot", "/bot/**"
+            "/messages/**", "/bot", "/bot/**","/borrowers/admins/online"
+    };
+
+    private final String[] MESSAGE_MAPPINGS = new String[]{
+            "/app/**", "/user/**", "/topic/public"
     };
 
     @Bean
@@ -68,7 +72,7 @@ public class SecurityConfig {
 
         security.authorizeHttpRequests(request ->
                 request
-                        .requestMatchers(HttpMethod.GET, "/books","/authors")
+                        .requestMatchers(HttpMethod.GET, "/books","/authors","/ws")
                         .permitAll()
                         .requestMatchers(WHITE_LIST)
                         .permitAll()
@@ -78,6 +82,10 @@ public class SecurityConfig {
                         .hasRole("BORROWER")
                         .requestMatchers(ADMIN_LIST)
                         .hasRole("ADMIN")
+                        .requestMatchers(MESSAGE_MAPPINGS)
+                        .hasAnyRole("ADMIN", "BORROWER")
+
+
         );
         security.sessionManagement(config ->
                 config.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
