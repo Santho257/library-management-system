@@ -16,7 +16,7 @@ import java.util.List;
 public class BotMessageController {
     private final BotMessageService botMessageService;
     @PostMapping
-    public ResponseEntity<String> addMessage(BotMessageRequestDto request){
+    public ResponseEntity<String> addMessage(@RequestBody BotMessageRequestDto request){
         return ResponseEntity.ok(botMessageService.addMessage(request));
     }
     @GetMapping

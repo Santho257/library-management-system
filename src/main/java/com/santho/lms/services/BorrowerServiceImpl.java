@@ -41,7 +41,9 @@ public class BorrowerServiceImpl implements BorrowerService{
 
     @Override
     public ResponseEntity<Response<?>> sort(){
-        List<BorrowerResponseDto> borrowers = borrowerDao.sort().stream()
+        List<BorrowerResponseDto> borrowers = borrowerDao
+                .sort()
+                .stream()
                 .map(br -> modelMapper.map(br, BorrowerResponseDto.class))
                 .toList();
         return ResponseEntity.ok(new Response<>(borrowers, HttpStatusCode.valueOf(200)));
