@@ -60,20 +60,11 @@ public class BorrowDetailsServiceImpl implements BorrowDetailsService{
     }
 
     @Override
-    public ResponseEntity<Response<?>> getByBorrower(String username) {
-        List<BorrowDetailsResponseDto> borrowDetails;
-        try {
-            borrowDetails = borrowDetailsDao.findByBorrower(username)
+    public List<BorrowDetailsResponseDto> getByBorrower(String username) {
+        return borrowDetailsDao.findByBorrower(username)
                     .stream()
                     .map(BorrowDetailsMapper::revMap)
                     .toList();
-        }
-        catch (NullPointerException ex){
-            return ResponseEntity.status(400).body(
-                    new Response<>(ex.getMessage(),HttpStatusCode.valueOf(400)));
-        }
-        return ResponseEntity.status(200).body(
-                new Response<>(borrowDetails,HttpStatusCode.valueOf(200)));
     }
 
     @Override

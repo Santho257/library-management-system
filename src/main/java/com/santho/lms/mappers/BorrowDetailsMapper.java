@@ -25,12 +25,12 @@ public class BorrowDetailsMapper {
         bookService = tempBookService;
         borrowerService = tempBorrowerService;
     }
+
     public static BorrowerDetails map(BorrowDetailsRequestDto bdrDto){
-        System.out.println(bdrDto);
         return BorrowerDetails.builder()
                 .book(bookService.get(bdrDto.getBookId()))
                 .borrower(borrowerService.get(bdrDto.getBorrowerId()))
-                .borrowedOn(LocalDate.now())
+                .expectedReturnDate(LocalDate.now().plusDays(7))
                 .build();
     }
 

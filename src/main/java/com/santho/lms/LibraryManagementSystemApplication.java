@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.config.EnableMongoAuditing;
 @SpringBootApplication
 @OpenAPIDefinition
 @EnableMongoAuditing
+@EnableJpaAuditing
 public class LibraryManagementSystemApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(LibraryManagementSystemApplication.class, args);

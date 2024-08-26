@@ -2,13 +2,16 @@ package com.santho.lms.controllers;
 
 import com.santho.lms.dto.Response;
 import com.santho.lms.dto.borrowdetails.BorrowDetailsRequestDto;
+import com.santho.lms.dto.borrowdetails.BorrowDetailsResponseDto;
 import com.santho.lms.services.BorrowDetailsService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
 
 @CrossOrigin
 @RestController
@@ -27,16 +30,16 @@ public class BorrowDetailsController {
         return borrowDetailsService.unReturned();
     }
     @GetMapping("/borrower/{borrower}")
-    public ResponseEntity<Response<?>> getByBorrower(@PathVariable String borrower){
-        return borrowDetailsService.getByBorrower(borrower.toLowerCase());
+    public ResponseEntity<Response<List<BorrowDetailsResponseDto>>> getByBorrower(@PathVariable String borrower){
+        return ResponseEntity.ok(new Response<List<BorrowDetailsResponseDto>>(borrowDetailsService.getByBorrower(borrower.toLowerCase()), HttpStatus.ACCEPTED));
     }
     @GetMapping("/borrower/{borrower}/unreturned")
     public ResponseEntity<Response<?>> unBrReturned(@PathVariable String borrower){
         return borrowDetailsService.unBrReturned(borrower.toLowerCase());
     }
     @GetMapping("/borrower")
-    public ResponseEntity<Response<?>> getBorrowed(Principal principal){
-        return borrowDetailsService.getByBorrower(principal.getName().toLowerCase());
+    public ResponseEntity<Response<List<BorrowDetailsResponseDto>>> getBorrowed(Principal principal){
+        return ResponseEntity.ok(new Response<List<BorrowDetailsResponseDto>>(borrowDetailsService.getByBorrower(principal.getName().toLowerCase()), HttpStatus.ACCEPTED));
     }
     @GetMapping("/borrower/unreturned")
     public ResponseEntity<Response<?>> getBrUnreturned(Principal principal){

@@ -2,6 +2,7 @@ package com.santho.lms.services;
 
 import com.santho.lms.dto.Response;
 import com.santho.lms.dto.borrowdetails.BorrowDetailsRequestDto;
+import com.santho.lms.dto.borrowdetails.BorrowDetailsResponseDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +16,7 @@ public interface BorrowDetailsService {
 
     ResponseEntity<Response<String>> returnn(String username, int id);
 
-    ResponseEntity<Response<?>> getByBorrower(String username);
+    List<BorrowDetailsResponseDto> getByBorrower(String username);
 
     ResponseEntity<Response<?>> unBrReturned(String lowerCase);
 
