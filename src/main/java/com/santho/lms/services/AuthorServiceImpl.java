@@ -76,7 +76,7 @@ public class AuthorServiceImpl implements AuthorService{
                 .stream()
                 .map(au -> modelMapper.map(au, AuthorResponseDto.class))
                 .toList();
-        return (authors.isEmpty()) ? ResponseEntity.status(404).body(new Response<>("No Authors Found with the key", HttpStatusCode.valueOf(404)))
+        return (authors.isEmpty()) ? ResponseEntity.status(404).body(new Response<>("No Authors Found with the key :: "+key, HttpStatusCode.valueOf(404)))
                 : ResponseEntity.ok(new Response<>(authors, HttpStatusCode.valueOf(200)));
     }
 

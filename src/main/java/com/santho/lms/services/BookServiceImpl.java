@@ -67,7 +67,7 @@ public class BookServiceImpl implements BookService{
 
     @Override
     public ResponseEntity<Response<?>> search(String key, String by) {
-        List<BookResponseDto> books;
+        List<BookResponseDto> books = new ArrayList<>();
         if(by == null)
             books = bookDao.search(key).stream()
                     .map(BookMapper::revMap)
@@ -80,8 +80,8 @@ public class BookServiceImpl implements BookService{
             books = bookDao.searchByAuthor(key).stream()
                     .map(BookMapper::revMap)
                     .toList();
-        else
-            books = new ArrayList<>();
+        if(books.isEmpty())
+            return  ResponseEntity.status(404).body(new Response<>("No Books Found with the key" + key, HttpStatusCode.valueOf(404)));
         return ResponseEntity.ok(new Response<>(books, HttpStatusCode.valueOf(200)));
     }
 

@@ -1,6 +1,7 @@
 package com.santho.lms.dto.borrowdetails;
 
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Data;
 
 @Data

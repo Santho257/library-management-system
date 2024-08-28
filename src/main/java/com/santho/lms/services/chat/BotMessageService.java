@@ -26,10 +26,11 @@ public class BotMessageService {
     }
 
 
-    public void delete(String id) {
+    public String delete(String id) {
         if(!messagesDao.existsById(id))
             throw new EntityNotFoundException("No Question found :: Question Id : " + id);
         messagesDao.deleteById(id);
+        return "Question deleted with Id :: "+id;
     }
 
     public BotMessageResponseDto findById(String id) {

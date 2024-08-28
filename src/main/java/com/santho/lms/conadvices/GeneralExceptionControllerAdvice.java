@@ -1,5 +1,6 @@
 package com.santho.lms.conadvices;
 
+import com.santho.lms.exception.AlreadReturnedException;
 import com.santho.lms.exception.UserExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
@@ -23,12 +24,20 @@ public class GeneralExceptionControllerAdvice {
         return ResponseEntity.badRequest().body(errors);
     }
 
+    @ExceptionHandler(UnsupportedOperationException.class)
+    public ResponseEntity<String> handle(UnsupportedOperationException ex){
+        return ResponseEntity.status(403).body(ex.getMessage());
+    }
+
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<String> handle(EntityNotFoundException ex){
         return ResponseEntity.status(400).body(ex.getMessage());
     }
 
-
+    @ExceptionHandler(AlreadReturnedException.class)
+    public ResponseEntity<String> handle(AlreadReturnedException     ex){
+        return ResponseEntity.status(400).body(ex.getMessage());
+    }
 
 
 }

@@ -42,17 +42,17 @@ public class BorrowDetailsServiceImpl implements BorrowDetailsService{
                     new Response<>(ex.getMessage(),HttpStatusCode.valueOf(404)));
         }
         return ResponseEntity.status(201).body(
-                new Response<>("Borrowed the book",HttpStatusCode.valueOf(201)));
+                new Response<>("Borrowed the book :: Book Id : " + bdrDto.getBookId(),HttpStatusCode.valueOf(201)));
     }
 
     @Override
     public ResponseEntity<Response<String>> returnn(String username, int id) {
-        BorrowerDetails borrowerDetails;
-        borrowerDetails = libraryDao.findByBorrowerAndBookId(username, id);
-        if(borrowerDetails == null)
-            throw new EntityNotFoundException("No Data available for given data");
+        BorrowerDetails borrowerDetails = borrowDetailsDao.findById(id).orElseThrow(() -> new EntityNotFoundException("" +
+                "No Data available for given data"));
+        if(!borrowerDetails.getBorrower().getUsername().equalsIgnoreCase(username))
+            throw new UnsupportedOperationException("You cannot rerurn the book someone borrowed!!");
         if(borrowerDetails.getReturnedOn() != null)
-            throw new AlreadReturnedException("Book Already Returned :: Book Id : " + id);
+            throw new AlreadReturnedException("Book Already Returned :: Borrowed Id : " + id);
         borrowerDetails.setReturnedOn(LocalDate.now());
         borrowDetailsDao.save(borrowerDetails);
         return ResponseEntity.status(200).body(

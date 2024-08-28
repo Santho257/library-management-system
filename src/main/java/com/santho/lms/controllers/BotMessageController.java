@@ -29,8 +29,7 @@ public class BotMessageController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteMessage(@PathVariable String id){
-        botMessageService.delete(id);
-        return ResponseEntity.accepted().build();
+    public ResponseEntity<String> deleteMessage(@PathVariable String id){
+        return ResponseEntity.ok(botMessageService.delete(id));
     }
 }

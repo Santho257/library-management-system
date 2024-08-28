@@ -50,8 +50,8 @@ public class BorrowDetailsController {
         bdrDto.setBorrowerId(principal.getName());
         return borrowDetailsService.borrow(bdrDto);
     }
-    @PostMapping("/return/{bookId}")
-    public ResponseEntity<Response<String>> returnn(Principal principal, @PathVariable int bookId){
-        return borrowDetailsService.returnn(principal.getName(), bookId);
+    @PostMapping("/return/{id}")
+    public ResponseEntity<Response<String>> returnn(Principal principal, @PathVariable int id){
+        return borrowDetailsService.returnn(principal.getName(), id);
     }
 }

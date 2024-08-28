@@ -25,8 +25,12 @@ public class LibraryDao {
         Predicate byUsername = criteriaBuilder.equal(root.get("borrower"), borrowerService.get(username));
         Predicate byBookId = criteriaBuilder.equal(root.get("book"), bookDao.findById(bookId)
                 .orElseThrow(()->new EntityNotFoundException("Book Not found with id::"+bookId)));
+        Predicate byUnreturned = criteriaBuilder.equal(
+                root.get("returnedOn")
+                , null);
         Predicate byUserBook = criteriaBuilder.and(byUsername, byBookId);
-        criteriaQuery.where(byUserBook);
+        Predicate byUserBookUnreturned = criteriaBuilder.and(byUnreturned,byUserBook);
+        criteriaQuery.where(byUserBookUnreturned);
         TypedQuery<BorrowerDetails> finalQuery = em.createQuery(criteriaQuery);
         System.out.println(finalQuery);
         return finalQuery.getSingleResult();
