@@ -26,7 +26,8 @@ public class BorrowDetailsServiceImpl implements BorrowDetailsService{
     private final LibraryDao libraryDao;
     @Override
     public ResponseEntity<Response<?>> getAll() {
-        List<BorrowDetailsResponseDto> borrowDetails = borrowDetailsDao.findAll().stream()
+        List<BorrowDetailsResponseDto> borrowDetails = borrowDetailsDao.findAll()
+                .stream()
                 .map(BorrowDetailsMapper::revMap)
                 .toList();
         return ResponseEntity.ok(new Response<>(borrowDetails, HttpStatusCode.valueOf(200)));
