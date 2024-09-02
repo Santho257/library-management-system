@@ -10,8 +10,6 @@ COPY src ./src
 
 RUN mvn clean package -DskipTests -Pprod
 
-RUN ls -la /app/target
-
 FROM openjdk:17-jdk
 
 WORKDIR /app
