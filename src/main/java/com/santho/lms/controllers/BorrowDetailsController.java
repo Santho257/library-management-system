@@ -1,6 +1,7 @@
 package com.santho.lms.controllers;
 
 import com.santho.lms.dto.Response;
+import com.santho.lms.dto.book.BookResponseDto;
 import com.santho.lms.dto.borrowdetails.BorrowDetailsRequestDto;
 import com.santho.lms.dto.borrowdetails.BorrowDetailsResponseDto;
 import com.santho.lms.services.BorrowDetailsService;
@@ -28,6 +29,10 @@ public class BorrowDetailsController {
     @GetMapping("/unreturned")
     public ResponseEntity<Response<?>> unReturned(){
         return borrowDetailsService.unReturned();
+    }
+    @GetMapping("/book/{bookId}")
+    public ResponseEntity<List<BorrowDetailsResponseDto>> trackByBooks(@PathVariable int bookId){
+        return ResponseEntity.ok(borrowDetailsService.trackByBookId(bookId));
     }
     @GetMapping("/borrower/{borrower}")
     public ResponseEntity<Response<List<BorrowDetailsResponseDto>>> getByBorrower(@PathVariable String borrower){

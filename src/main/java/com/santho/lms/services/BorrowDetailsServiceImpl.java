@@ -3,6 +3,7 @@ package com.santho.lms.services;
 import com.santho.lms.daos.BorrowDetailsDao;
 import com.santho.lms.daos.LibraryDao;
 import com.santho.lms.dto.Response;
+import com.santho.lms.dto.book.BookResponseDto;
 import com.santho.lms.dto.borrowdetails.BorrowDetailsRequestDto;
 import com.santho.lms.dto.borrowdetails.BorrowDetailsResponseDto;
 import com.santho.lms.exception.AlreadReturnedException;
@@ -102,5 +103,13 @@ public class BorrowDetailsServiceImpl implements BorrowDetailsService{
         }
         return ResponseEntity.status(200).body(
                 new Response<>(borrowDetails,HttpStatusCode.valueOf(200)));
+    }
+
+    @Override
+    public List<BorrowDetailsResponseDto> trackByBookId(int bookId) {
+        return borrowDetailsDao.findByBook(bookId)
+                .stream()
+                .map(BorrowDetailsMapper::revMap)
+                .toList();
     }
 }

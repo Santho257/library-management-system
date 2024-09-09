@@ -9,4 +9,7 @@ import java.util.List;
 public interface BorrowDetailsDao extends JpaRepository<BorrowerDetails, Integer> {
     @Query("SELECT b FROM BorrowerDetails b WHERE LOWER(b.borrower.username) LIKE %:username%")
     List<BorrowerDetails> findByBorrower(String username);
+
+    @Query("SELECT b FROM BorrowerDetails b WHERE b.book.id = :bookId")
+    List<BorrowerDetails> findByBook(int bookId);
 }

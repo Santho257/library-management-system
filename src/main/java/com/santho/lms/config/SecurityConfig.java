@@ -37,7 +37,7 @@ public class SecurityConfig {
 
     private final String[] BORROWER_LIST = new String[]{"/library/borrow", "/library/return/**", "/library/borrower", "library/borrower/unreturned"};
 
-    private final String[] ADMIN_LIST = new String[]{"/borrowers/**","/borrowers", "/books/**", "/authors/**","/library", "/library/unreturned", "/library/borrower/**",  "/bot/**"};
+    private final String[] ADMIN_LIST = new String[]{"/borrowers/**","/borrowers", "/books/**", "/authors/**","/library", "/library/unreturned", "/library/borrower/**","/library/book/**","/library/book",  "/bot/**"};
 
     private final String[] BOTH_GET_LIST = new String[]{
             "/messages/**", "/bot", "/bot/**","/borrowers/admins/online"

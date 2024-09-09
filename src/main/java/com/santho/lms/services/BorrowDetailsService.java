@@ -1,6 +1,7 @@
 package com.santho.lms.services;
 
 import com.santho.lms.dto.Response;
+import com.santho.lms.dto.book.BookResponseDto;
 import com.santho.lms.dto.borrowdetails.BorrowDetailsRequestDto;
 import com.santho.lms.dto.borrowdetails.BorrowDetailsResponseDto;
 import org.springframework.http.ResponseEntity;
@@ -22,4 +23,5 @@ public interface BorrowDetailsService {
 
     ResponseEntity<Response<?>> unReturned();
 
+    List<BorrowDetailsResponseDto> trackByBookId(int bookId);
 }
